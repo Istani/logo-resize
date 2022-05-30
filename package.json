@@ -11,7 +11,8 @@
     "git-update": "git checkout master && git pull"
   },
   "devDependencies": {
-    "cz-conventional-changelog": "^3.0.1"
+    "cz-conventional-changelog": "^3.0.1",
+    "png-to-ico": "^2.1.4"
   },
   "config": {
     "commitizen": {

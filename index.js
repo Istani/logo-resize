@@ -1,7 +1,4 @@
 var Jimp = require('jimp');
-const {
-  collapseTextChangeRangesAcrossMultipleVersions,
-} = require('typescript');
 
 async function main(input_file, output_path = 'tmp/') {
   var size = [16, 64, 256];
@@ -13,12 +10,25 @@ async function main(input_file, output_path = 'tmp/') {
     var image = await Jimp.read(input_file);
     var output_file = output_path + 'logo_' + size[i] + 'x' + size[i] + '.png';
     console.log(output_file);
-    image.resize(size[i], size[i]);
-    image.quality(100);
-    image.write(output_file);
-    //console.log("1");
+    await image.resize(size[i], size[i]);
+    await image.quality(100);
+    await image.write(output_file);
+
+    if (size[i] == 16) {
+      await create_icon(output_file, output_path);
+    }
   }
-  //console.log("2");
+}
+
+async function create_icon(input_file, output_path = 'tmp/') {
+  //console.log(input_file);
+  const fs = require('fs');
+  const pngToIco = require('png-to-ico');
+  pngToIco([input_file])
+    .then((buf) => {
+      fs.writeFileSync(output_path + 'favicon.ico', buf);
+    })
+    .catch(console.error);
 }
 
 main('../website/public/img/ym.png', '../website/public/img/');
